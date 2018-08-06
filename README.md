@@ -1,2 +1,2 @@
 # Database-functionalities
-Just some experimentation with databases in Python
+A tutorial on using sqlite3.
