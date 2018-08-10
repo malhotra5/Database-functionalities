@@ -38,3 +38,21 @@ Now that we have a cursor, we can get rolling. Our first step is to make a table
      c.execute('CREATE TABLE IF NOT EXISTS plots(unix REAL, datestamp TEXT, keyword TEXT, value REAL)')
 
 By convention, sqlite commands are written in CAPS. The command above only makes a table using the cursor, if the table does not exist. This logic is very important and should be included in your programs. If a table already has data, and you make another empty table with the same name, all the data will be lost. 
+
+Lets break down what the command above is doing in detail - 
+
+* **CREATE TABLE** - This command is used to make a new table
+* **IF NOT EXISTS** - Piece of logic to make sure to only create a new table if it doesn't exist
+* **plots** - This is the name of the new table
+* **unix, datestamp, keyword, value** - These are the names of my headers, or columns. My data will fall under these categories
+* **REAL, TEXT** - These are used to specify what kind of data type will be put in a column. Example - datestamp will only store text
+
+
+
+
+
+
+
+
+
+
