@@ -52,13 +52,44 @@ Lets break down what the command above is doing in detail -
 
 By now, you should have realized how databases work. The tree diagram below will explain it. 
 
-* Databases
-    * Multiple tables
-        * Data
+* Databases 
+    * Multiple tables - A database can have many tables 
+        * Data - Data can be stored in any of the tables in a database
+
+So, to put data into a database, we need to specify which table to put it into. You can add data by doing the following - 
+
+         c.execute("INSERT INTO plots VALUES(342341, '2018-08-02', 'first', 5)")
+         conn.commit()
+         
+We execute a command using the cursor. In this case, we add data into the table plots. We use **VALUES()** to specify the values we want to add to the database. After we finish doing so, we need to commit the changes. This saves the additional work we have done on the database.
+
+It is a little tricky when it comes to using variables when adding data into a table. As programmers, we never want to hand code things that goes into the database. We want to pass variables that hold the data. To do so, we run the following - 
+
+    c.execute("INSERT INTO plots (unix, datestamp, keyword, value) VALUES (?, ?, ?, ?)",
+              (variable1,variable2,variable3,variable4))
+    conn.commit()
 
 
+Notice, everything is the same except for the **?** in **VALUES()**. The question marks act as placeholders. Then, we can specify the variables in parentheses. 
 
+### Reading values from a database
 
+Sqlite is a very powerful tool. We can run various filters to get data or a part of the data we want. We will cover multiple examples to understand how to do so. 
 
+To get all the data at once, we can run the following command - 
 
+    c.execute('SELECT * FROM plots')
+    data = c.fetchall()
 
+The first piece of code uses the cursor to select what we want from our table. The * is to select everything from plots. The fetchall() method gets everything we selected. We can select only parts of the data we want. To do so, we replace * with what we want. 
+
+    c.execute('SELECT value FROM plots')
+    data = c.fetchall()
+This gets the only the column value.
+
+    c.execute("SELECT * FROM plots WHERE value=3 AND keyword='Python'")
+    data = c.fetchall()
+    
+This is an example of a filter to only get the rows of data that have value = 3 and the keyword = Python.
+
+### Updating and deleting values
