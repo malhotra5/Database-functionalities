@@ -48,7 +48,13 @@ Lets break down what the command above is doing in detail -
 * **REAL, TEXT** - These are used to specify what kind of data type will be put in a column. Example - datestamp will only store text
 
 
+### Putting data into a database 
 
+By now, you should have realized how databases work. The tree diagram below will explain it. 
+
+* Databases
+    * Multiple tables
+        * Data
 
 
 
