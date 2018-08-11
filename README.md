@@ -93,3 +93,25 @@ This gets the only the column value.
 This is an example of a filter to only get the rows of data that have value = 3 and the keyword = Python.
 
 ### Updating and deleting values
+When updating and deleting values in a database, note that the changes you make are permanent. No changes can be reversed in sqlite. So its always good practise to keep multiple copies of your database. Some might think that it might take up too much storage. But, sqlite was built for very small amounts of data, like a few hundred thousand. 
+
+To update values, run the following - 
+
+    c.execute('UPDATE plots SET value=(?) WHERE value = (?)', (updateVal, initialVal))
+    conn.commit()
+    
+ By now, the statement above should make sense to you. We are changing the value of initialVal to updateVal in the database. 
+ 
+ To delete, run the following - 
+ 
+    c.execute('DELETE FROM plots WHERE value = (?)', (delVal,))
+    conn.commit()
+
+This should also make some sense now. Notice the extra comma after delVal. It is just some syntax requirement for sqlite. It is honestly not a good error to throw, so I mentioned it in this tutorial. The comma should only be put if you are updating one value. If you look at updating values above, we didn't put an extra comma after initialVal. This is because we were passing two parameters. 
+
+## Things to take away
+* Sqlite is a very powerful and small scale database
+* Sqlite supports the passing of variables for database work 
+* You can now apply what you have learned to your own projects in a similar way
+## Built With
+Python3
