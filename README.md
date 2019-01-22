@@ -24,19 +24,20 @@ Well, as the name says it, it's *lite*. Sqlite is a module provided in Python to
 
 ### Making a database
 Turns out, it we try to connect to a database that doesn't exist, sqlite3 makes one for us. Heres what I mean - 
-
+```python
     conn = sqlite3.connect("movieData.db")
+```
 The following code, connects to a database. A connection is a way of specifying which database you want to work with. For example, if I want to put additional data in movieData.db, I will have to connect to it first. But, if the database doesn't exist, then a new database with the name movieData.db is made.
 ### Making tables
 Before we can manipulate a database in any way, we need to make a cursor. Once we connect to a database, we need to make a cursor for the connected database. A cursor in a database can be visualized as an actual cursor. We can move the cursor and make it do things for us in the database. To make a cursor, we run the following command on the previously initialized connection - 
-
+```python
     c = conn.cursor()
-
+```
 
 Now that we have a cursor, we can get rolling. Our first step is to make a table. This table has headers, and we can put in multiple rows as data. To make a table, run the following command -
-    
+ ```python   
      c.execute('CREATE TABLE IF NOT EXISTS plots(unix REAL, datestamp TEXT, keyword TEXT, value REAL)')
-
+```
 By convention, sqlite commands are written in CAPS. The command above only makes a table using the cursor, if the table does not exist. This logic is very important and should be included in your programs. If a table already has data, and you make another empty table with the same name, all the data will be lost. 
 
 Lets break down what the command above is doing in detail - 
@@ -57,18 +58,18 @@ By now, you should have realized how databases work. The tree diagram below will
         * Data - Data can be stored in any of the tables in a database
 
 So, to put data into a database, we need to specify which table to put it into. You can add data by doing the following - 
-
+```python
          c.execute("INSERT INTO plots VALUES(342341, '2018-08-02', 'first', 5)")
          conn.commit()
-         
+ ```        
 We execute a command using the cursor. In this case, we add data into the table plots. We use **VALUES()** to specify the values we want to add to the database. After we finish doing so, we need to commit the changes. This saves the additional work we have done on the database.
 
 It is a little tricky when it comes to using variables when adding data into a table. As programmers, we never want to hand code things that goes into the database. We want to pass variables that hold the data. To do so, we run the following - 
-
+```python
     c.execute("INSERT INTO plots (unix, datestamp, keyword, value) VALUES (?, ?, ?, ?)",
               (variable1,variable2,variable3,variable4))
     conn.commit()
-
+```
 
 Notice, everything is the same except for the **?** in **VALUES()**. The question marks act as placeholders. Then, we can specify the variables in parentheses. 
 
@@ -77,36 +78,37 @@ Notice, everything is the same except for the **?** in **VALUES()**. The questio
 Sqlite is a very powerful tool. We can run various filters to get data or a part of the data we want. We will cover multiple examples to understand how to do so. 
 
 To get all the data at once, we can run the following command - 
-
+```python
     c.execute('SELECT * FROM plots')
     data = c.fetchall()
-
+```
 The first piece of code uses the cursor to select what we want from our table. The * is to select everything from plots. The fetchall() method gets everything we selected. We can select only parts of the data we want. To do so, we replace * with what we want. 
-
+```python
     c.execute('SELECT value FROM plots')
     data = c.fetchall()
+```
 This gets the only the column value.
-
+```python
     c.execute("SELECT * FROM plots WHERE value=3 AND keyword='Python'")
     data = c.fetchall()
-    
+```    
 This is an example of a filter to only get the rows of data that have value = 3 and the keyword = Python.
 
 ### Updating and deleting values
 When updating and deleting values in a database, note that the changes you make are permanent. No changes can be reversed in sqlite. So its always good practise to keep multiple copies of your database. Some might think that it might take up too much storage. But, sqlite was built for very small amounts of data, like a few hundred thousand. 
 
 To update values, run the following - 
-
+```python
     c.execute('UPDATE plots SET value=(?) WHERE value = (?)', (updateVal, initialVal))
     conn.commit()
-    
+ ```  
  By now, the statement above should make sense to you. We are changing the value of initialVal to updateVal in the database. 
  
  To delete, run the following - 
- 
+ ```python
     c.execute('DELETE FROM plots WHERE value = (?)', (delVal,))
     conn.commit()
-
+```
 This should also make some sense now. Notice the extra comma after delVal. It is just some syntax requirement for sqlite. It is honestly not a good error to throw, so I mentioned it in this tutorial. The comma should only be put if you are updating one value. If you look at updating values above, we didn't put an extra comma after initialVal. This is because we were passing two parameters. 
 
 ## Things to take away
